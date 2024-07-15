@@ -1,0 +1,25 @@
+body {
+    background-color: #fff;
+}
+
+.navbar {
+    background-color: #333; 
+    color: #fff; /* Color de texto para mejor contraste */
+    padding: 10px 0; /* Añade un poco de espacio vertical */
+}
+
+.footer {
+    background-color: #e16201; /* Amarillo */
+    color: #000000; /* Texto negro para mejor legibilidad */
+    padding: 10px 0; /* Añade un poco de espacio vertical */
+    text-align: center; /* Centra el texto */
+}
+
+.btn-primary {
+    background-color: #e16201; /* Naranja */
+    border-color: #ff6f00; /* Naranja */
+}
+.btn-secondary {
+    background-color: #930000; /* Amarillo */
+    
+}

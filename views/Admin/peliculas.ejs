@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Cine con Pizza</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styleadmin.css">
+   
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand navbar-dark">
+            <a class="navbar-brand" href="#">
+              
+                Cine con Pizza
+            </a>
+            <div class="navbar-nav ml-auto">
+                <button class="btn btn-secondary" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mt-5">
+        <h2 class="text-center mb-5">Panel de Administración</h2>
+
+        <!-- Botón para Agregar Función -->
+        <div class="text-center mb-5">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addFuncionModal">Agregar Nueva Función</button>
+        </div>
+
+        <!-- Lista de Funciones -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                Lista de Funciones
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Película</th>
+                                <th>Sala</th>
+                                <th>Hora de Inicio</th>
+                                <th>Hora de Fin</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% funciones.forEach(function(funcion) { %>
+                                <tr>
+                                    <td><%= funcion.FuncionID %></td>
+                                    <td><%= funcion.Titulo %></td>
+                                    <td><%= funcion.Nombre %></td>
+                                    <td><%= funcion.HoraInicio %></td>
+                                    <td><%= funcion.HoraFin %></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteFuncion('<%= funcion.FuncionID %>')">Eliminar</button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para Agregar Función -->
+    <div class="modal fade" id="addFuncionModal" tabindex="-1" aria-labelledby="addFuncionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addFuncionModalLabel">Agregar Nueva Función</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/add-funcion" method="post">
+                        <div class="form-group">
+                            <label for="Titulo">Título de la Película:</label>
+                            <input type="text" class="form-control" id="Titulo" name="Titulo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Genero">Género:</label>
+                            <input type="text" class="form-control" id="Genero" name="Genero">
+                        </div>
+                        <div class="form-group">
+                            <label for="Duracion">Duración (minutos):</label>
+                            <input type="number" class="form-control" id="Duracion" name="Duracion">
+                        </div>
+                        <div class="form-group">
+                            <label for="Director">Director:</label>
+                            <input type="text" class="form-control" id="Director" name="Director">
+                        </div>
+                        <div class="form-group">
+                            <label for="Calificacion">Calificación:</label>
+                            <input type="number" step="0.1" class="form-control" id="Calificacion" name="Calificacion">
+                        </div>
+                        <div class="form-group">
+                            <label for="SalaID">Sala:</label>
+                            <select class="form-control" id="SalaID" name="SalaID" required>
+                                <% salas.forEach(function(sala) { %>
+                                    <option value="<%= sala.SalaID %>"><%= sala.Nombre %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="HoraInicio">Hora de Inicio:</label>
+                            <input type="datetime-local" class="form-control" id="HoraInicio" name="HoraInicio" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar Función</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <% if(alert) { %>
+        <script>
+          Swal.fire({
+            title: 'Error',
+            html:'Error al agregar la función',
+            icon:'warning',
+            showConfirmButton: true,
+          }).then(()=>{
+            window.history.back();
+          })
+        </script>
+      <% } %>
+    <script>
+        function logout() {
+            // Lógica para cerrar sesión
+            window.location.href = '/logout';
+        }
+
+        function deleteFuncion(FuncionID) {
+            if (confirm("¿Estás seguro de que deseas eliminar esta función?")) {
+                // Lógica para eliminar la función
+                fetch(`/admin/delete-funcion/${FuncionID}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert("No se pudo eliminar la función");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("No se pudo eliminar la función");
+                    });
+            }
+        }
+    </script>
+</body>
+</body>
+</html>

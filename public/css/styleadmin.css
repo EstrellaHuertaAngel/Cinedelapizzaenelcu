@@ -1,0 +1,14 @@
+body {
+    background-color: #fff;
+}
+.navbar {
+    background-color: #333; /* Naranja */
+}
+.btn-primary {
+    background-color: #ff6f00; /* Naranja */
+    border-color: #ff6f00; /* Naranja */
+}
+.btn-secondary {
+    background-color: #ffc107; /* Amarillo */
+    border-color: #ffc107; /* Amarillo */
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Asientos - Cine con Pizza</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/stylesala.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand navbar-dark">
+            <a class="navbar-brand" href="#">
+                
+                Cine con Pizza
+            </a>
+            <div>
+                <a  href="/misCompras">Mis Compras</a>
+                <a  href="/peliculas">Peliculas</a>
+            </div>
+            <div class="navbar-nav ml-auto">
+                <% if (user) { %>
+                    <span class="navbar-text text-white mr-3" id="account"><%= user.CorreoElectronico %></span>
+                    <button class="btn btn-secondary" onclick="logout()">Cerrar Sesión</button>
+                <% } else { %>
+                    <a class="btn btn-secondary" href="/login">Iniciar Sesión</a>
+                    <a class="btn btn-primary ml-2" href="/register">Registrarse</a>
+                <% } %>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mt-5">
+        <h2 class="text-center mb-5">Selecciona tus Asientos</h2>
+        <p id="FuncionID" hidden><%= funcion.FuncionID %></p>
+        
+        <!-- Información de la Película -->
+        <div class="text-center mb-4">
+            <h4><%= funcion.Titulo %></h4>
+            <p><strong>Sala:</strong> <%= funcion.Nombre %></p>
+            <p><strong>Hora de Inicio:</strong> <%= new Date(funcion.HoraInicio).toLocaleString() %></p>
+            <p><strong>Hora de Fin:</strong> <%= new Date(funcion.HoraFin).toLocaleString() %></p>
+        </div>
+
+        <!-- Mapa de Asientos -->
+        <div class="text-center mb-4">
+            <% for (let i = 0; i < 4; i++) { %> <!-- 4 filas -->
+                <div class="d-flex justify-content-center mb-2">
+                    <% for (let j = 0; j < 5; j++) { %> <!-- 5 asientos por fila -->
+                        <%
+                            let seatNumber = i * 5 + j + 1;
+                            let isReserved = funcion.Reservas.includes(seatNumber);
+                        %>  
+                        <div class="seat <%= isReserved ? 'reserved' : 'available' %>" data-seat="<%= seatNumber %>"></div>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Botón de Proceder compra -->
+        <div class="text-center">
+            <button class="btn btn-primary" onclick="BuySeats()">Reservar Asientos</button>
+        </div>
+
+
+        <!-- Modal de proceder compra -->
+        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="buyModalLabel">Reservar Asientos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--Informacion de la compra y ingreso de los datos bancarios-->
+                        <div class="form-group">
+                            <label for="cardAmount">Total a Pagar</label>
+                            <p id="cardAmount" class="form-control">$0.00</p>
+                            <br>
+                            <label for="cardName">Nombre del Titular</label>
+                            <input type="text" class="form-control" id="cardName" placeholder="Juan Pérez">
+                            <label for="cardNumber">Número de Tarjeta</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456">
+                            <small id="cardNumberHelp" class="form-text text-muted">No guardamos tu información bancaria.</small>
+                            <label for="cardExpiration">Fecha de Expiración</label>
+                            <input type="text" class="form-control" id="cardExpiration" placeholder="MM/AA">
+                            <label for="cardCVV">CVV</label>
+                            <input type="text" class="form-control" id="cardCVV" placeholder="123">
+                            <small id="cardCVVHelp" class="form-text text-muted">Código de seguridad de 3 dígitos.</small>
+                            
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="ConfirmBuy()">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+         
+
+
+    </main>
+
+    <footer class="footer mt-5 py-3">
+        <div class="container text-center">
+            <p>&copy; 2024 Cine con Pizza. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
+    <script src="../js/sala.js"></script>
+</body>
+</html>

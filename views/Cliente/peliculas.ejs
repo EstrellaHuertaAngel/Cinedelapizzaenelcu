@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funciones - Cine con Pizza</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/stylesala.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand navbar-dark">
+            <a class="navbar-brand" href="#">
+              
+                Cine con Pizza
+            </a>
+            <div>
+                <a  href="/misCompras">Mis Compras</a>
+                <a  href="/peliculas">Peliculas</a>
+            </div>
+            <div class="navbar-nav ml-auto">
+                    <span class="navbar-text text-white mr-3"><%= user.CorreoElectronico %></span>
+                    <button class="btn btn-secondary" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mt-5">
+        <h2 class="text-center mb-5">Funciones Disponibles</h2>
+        
+        <!-- Listado de Funciones -->
+        <div class="row">
+            <% funciones.forEach(function(funcion) { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <class="card-img-top" alt="<%= funcion.Titulo %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= funcion.Titulo %></h5>
+                            <p class="card-text"><strong>Sala:</strong> <%= funcion.Nombre %></p>
+                            <p class="card-text"><strong>Hora de Inicio:</strong> <%= new Date(funcion.HoraInicio).toLocaleString() %></p>
+                            <p class="card-text"><strong>Hora de Fin:</strong> <%= new Date(funcion.HoraFin).toLocaleString() %></p>
+                            <a href="/reservar/<%= funcion.FuncionID %>" class="btn btn-primary">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+
+    <footer class="footer mt-5 py-3">
+        <div class="container text-center">
+            <p>&copy; 2024 Cine con Pizza. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function logout() {
+            // Lógica para cerrar sesión
+            window.location.href = '/logout';
+        }
+    </script>
+</body>
+</html>

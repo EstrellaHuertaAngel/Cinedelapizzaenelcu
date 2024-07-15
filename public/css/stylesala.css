@@ -1,0 +1,56 @@
+body {
+    background-color: #fff;
+    font-family: Arial, sans-serif; /* Establece una fuente genérica */
+    margin: 0; /* Elimina el margen predeterminado del cuerpo */
+    padding: 0; /* Elimina el relleno predeterminado del cuerpo */
+}
+
+.navbar {
+    background-color: #333; 
+    color: #fff; /* Color de texto para mejor contraste */
+    padding: 10px 0; /* Añade un poco de espacio vertical */
+}
+
+.footer {
+    background-color: #ff72075e; /* Amarillo */
+    color: #000000; /* Texto negro para mejor legibilidad */
+    padding: 10px 0; /* Añade un poco de espacio vertical */
+    text-align: center; /* Centra el texto */
+}
+
+.seat {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transición suave para cambios de color */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.seat.available {
+    background-color: #28a745; /* Verde */
+    color: #fff; /* Texto blanco para mejor contraste */
+}
+
+.seat.reserved {
+    background-color: #dc3545; /* Rojo */
+    cursor: not-allowed;
+    color: #fff; /* Texto blanco para mejor contraste */
+}
+
+.seat.selected {
+    background-color: #ffc107; /* Amarillo */
+    color: #000; /* Texto negro para mejor legibilidad */
+}
+
+/* Estilos adicionales para mejorar la visualización en dispositivos móviles */
+@media (max-width: 768px) {
+    .seat {
+        width: 25px;
+        height: 25px;
+    }
+}
